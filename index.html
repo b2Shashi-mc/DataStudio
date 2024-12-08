@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- SEO meta tags -->
+  <meta name="description" content="Unlock your potential in Salesforce Marketing Cloud with our insightful blogs, fostering continuous learning, confident expertise, and influential contributions">
+  <meta name="keywords" content="ampscript, ssjs, wsproxy, b2shashi, SFMC, sfmc, SEO">
+  <meta name="author" content="Shashi Prasad">
+  
+  <meta property="og:title" content="AMPscriptify">
+  <meta property="og:description" content="Unlock your potential in Salesforce Marketing Cloud with our insightful blogs, fostering continuous learning, confident expertise, and influential contributions">
+  <meta property="og:url" content="https://b2shashi.blogspot.com/">
+  <meta property="og:image" content="path_to_image.jpg">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AMPscriptify">
+  <meta name="twitter:description" content="Unlock your potential in Salesforce Marketing Cloud with our insightful blogs, fostering continuous learning, confident expertise, and influential contributions">
+  <meta name="twitter:image" content="path_to_image.jpg">
+
+  <meta name="robots" content="index, follow">
+  <title>AMPSCRIPTIFY Data Views</title>
+  <link rel="icon" href="icon.jpg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Merriweather:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="AMPscriptify.css">
+
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="header-container">
+        <div class="logo">
+          <h1>AMPscriptify
+          </h1>
+        </div>
+      </div>
+    </header>
+    <!-- Progress Bar -->
+    <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progressBar">
+      <div id="progress" class="progress" style="width: 33%;">
+      </div>
+    </div>
+    <!-- Step Tabs Navigation -->
+    <nav aria-label="Steps navigation">
+      <div class="tabs">
+        <ul>
+          <li id="tabStep1" class="tab active" onclick="showStep(1)" role="tab" aria-selected="true">
+            <span class="tab-icon"></span> Step 1
+          </li>
+          <li id="tabStep2" class="tab" onclick="showStep(2)" role="tab">
+            <span class="tab-icon"></span> Step 2
+          </li>
+          <li id="tabStep3" class="tab" onclick="showStep(3)" role="tab">
+            <span class="tab-icon"></span> Step 3
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Step 1: Select Data Views -->
+    <section id="step1" class="step">
+      <div class="card">
+        <h2>Select Data Views
+        </h2>
+        <form id="dataViewsForm" name="dataViewsForm" method="POST">
+          <div class="input-group">
+            <label for="codeResourceUrl1">Code Resource URL:</label>
+            <input type="url" id="codeResourceUrl1" name="codeResourceUrl" placeholder="Enter the code resource URL" required>
+          </div>
+          <p class="description">Please select the data views you would like to create a Data Extension from:
+          </p>
+          <div class="checkbox-group">
+            <label for="Sent"><input type="checkbox" id="sent" name="dataViews" value="Sent"> Sent</label>
+            <label for="Open"><input type="checkbox" id="open" name="dataViews" value="Open"> Open</label>
+            <label for="Click"><input type="checkbox" id="click" name="dataViews" value="Click"> Click</label>
+            <label for="Bounce"><input type="checkbox" id="bounce" name="dataViews" value="Bounce"> Bounce</label>
+            <label for="Complaint"><input type="checkbox" id="complaint" name="dataViews" value="Complaint"> Complaint</label>
+            <label for="Unsubscribe"><input type="checkbox" id="unsubscribe" name="dataViews" value="Unsubscribe"> Unsubscribe</label>
+          </div>
+          <div class="navigation">
+            <button type="submit" class="primary-btn" >Create Data Extension</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Step 2: Select Query Definitions -->
+    <section id="step2" class="step">
+      <div class="card">
+        <h2>Select Query Definitions
+        </h2>
+        <form id="queryForm" name="queryForm">
+          <div class="input-group">
+            <label for="codeResourceUrl2">Code Resource URL:</label>
+            <input type="text" id="codeResourceUrl2" name="codeResourceUrl" placeholder="Enter the code resource URL" required>
+          </div>
+          <p class="description">Choose the data views to create queries for:
+          </p>
+          <div class="checkbox-group">
+            <label for="sentQuery"><input type="checkbox" id="sentQuery" name="queries" value="sentQuery"> Sent</label>
+            <label for="openQuery"><input type="checkbox" id="openQuery" name="queries" value="openQuery"> Open</label>
+            <label for="clickQuery"><input type="checkbox" id="clickQuery" name="queries" value="clickQuery"> Click</label>
+            <label for="bounceQuery"><input type="checkbox" id="bounceQuery" name="queries" value="bounceQuery"> Bounce</label>
+            <label for="complaintQuery"><input type="checkbox" id="complaintQuery" name="queries" value="complaintQuery"> Complaint</label>
+            <label for="unsubscribeQuery"><input type="checkbox" id="unsubscribeQuery" name="queries" value="unsubscribeQuery"> Unsubscribe</label>
+          </div>
+          <div class="navigation">
+            <button type="submit" class="primary-btn" >Create Query</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Step 3: Run Queries -->
+    <section id="step3" class="step">
+      <div class="card">
+        <h2>Run Queries
+        </h2>
+        <form id="runQueryForm" name="runQueryForm">
+          <div class="input-group">
+            <label for="codeResourceUrl3">Code Resource URL:</label>
+            <input type="url" id="codeResourceUrl3" name="codeResourceUrl" placeholder="Enter the code resource URL" required>
+          </div>
+          <p class="description">Select queries to run:
+          </p>
+          <div class="checkbox-group">
+            <label for="sentRun"><input type="checkbox" id="sentRun" name="runQueries" value="sentRun"> Sent</label>
+            <label for="openRun"><input type="checkbox" id="openRun" name="runQueries" value="openRun"> Open</label>
+            <label for="clickRun"><input type="checkbox" id="clickRun" name="runQueries" value="clickRun"> Click</label>
+            <label for="bounceRun"><input type="checkbox" id="bounceRun" name="runQueries" value="bounceRun"> Bounce</label>
+            <label for="complaintRun"><input type="checkbox" id="complaintRun" name="runQueries" value="complaintRun"> Complaint</label>
+            <label for="unsubscribeRun"><input type="checkbox" id="unsubscribeRun" name="runQueries" value="unsubscribeRun"> Unsubscribe</label>
+          </div>
+          <div class="navigation">
+            <button type="submit" class="primary-btn" >Run Query</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+  <div id="modalPopup" style="display: none;">
+    <h2 id="modalTitle">
+    </h2>
+    <p id="modalMessage">
+    </p>
+    <button onclick="closeModal()" class="primary-btn">Close</button>
+  </div>
+  <script src="AMPscriptify.js"></script>
+</body>
+
+</html>

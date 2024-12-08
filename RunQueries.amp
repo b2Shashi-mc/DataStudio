@@ -1,0 +1,77 @@
+<script runat="server">
+    // Load necessary libraries
+    Platform.Load("core", "1");
+    try{
+            // Retrieve the HTTP method (GET or POST)
+            var method = Platform.Request.Method;
+
+            // Handle POST requests only
+            if (method == "POST") {
+                // Get the JSON payload from the POST request
+            var postData = Platform.Request.GetPostData();
+
+            // Parse the JSON payload
+            var formData = Platform.Function.ParseJSON(postData)
+
+            // Extract the 'queries' array from the parsed data
+            var runQueries = formData.runQueries;
+
+            // Loop through each campaign data
+            for (var i = 0; i < runQueries.length; i++) {
+                var query = runQueries[i];
+
+                if(query=== "sentRun"){
+                    query="sentdataviewQueryDefinition";
+                }else if(query=== "openRun"){
+                    query="opendataviewQueryDefinition";
+                } else if(query=== "clickRun"){
+                    query="clickdataviewQueryDefinition";
+                }else if(query=== "bounceRun"){
+                    query="bouncedataviewQueryDefinition";
+                }else if(query=== "complaintRun"){
+                    query="complaintdataviewQueryDefinition";
+                }else if(query=== "unsubscribeRun"){
+                    query="unsubscribedataviewQueryDefinition";
+                }
+                // Run query activity for the current campaign
+                var resultRun = RunQueryActivity(query);
+                
+            }
+
+                // Set success response variables
+                Variable.SetValue("@status", resultRun);
+                Variable.SetValue("@ErrorCode", "000");
+                Variable.SetValue("@StatusMessage", "Queries created successfully.");
+            }
+    } catch (ex) {
+        // Catch and log any errors that occur
+        Variable.SetValue("@status", "Error");
+        Variable.SetValue("@ErrorCode", "001");
+        Variable.SetValue("@StatusMessage", "Error: " + ex.message);
+    }
+
+    // Function to run a query activity for a given campaign
+    function RunQueryActivity(query){
+        // Initialize WSProxy API
+        var api = new Script.Util.WSProxy();
+        
+        // Retrieve ObjectID of the query definition for the given campaign
+        var request = api.retrieve("QueryDefinition", ["ObjectID"], {
+            Property: "Name",
+            SimpleOperator: "equals",
+            Value: query
+        });
+        
+        // Extract ObjectID from the response
+        var objectId = request.Results[0].ObjectID;
+        
+        // Properties for running the query activity
+        var props = {
+            "ObjectID": objectId 
+        }
+        
+        // Run the query activity
+        var result = api.performItem("QueryDefinition", props, "Start", {});
+        return result;
+    }
+</script>

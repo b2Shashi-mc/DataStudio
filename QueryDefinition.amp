@@ -1,0 +1,215 @@
+<script runat="server">
+    // Load necessary libraries
+    Platform.Load("core", "1");
+
+    try {
+        // Retrieve the HTTP method (GET or POST)
+        var method = Platform.Request.Method;
+
+        // Handle POST requests only
+        if (method == "POST") {
+
+            // Get the JSON payload from the POST request
+            var postData = Platform.Request.GetPostData();
+
+            // Parse the JSON payload
+            var formData = Platform.Function.ParseJSON(postData);
+
+            // Extract the 'queries' array from the parsed data
+            var queries = formData.queries;
+
+            // Loop through each query in the 'queries' array
+            for (var i = 0; i < queries.length; i++) {
+                var query = queries[i];
+
+                // Define Data Extension and folder names
+                var queryName = query;
+                var folderName = "AMPscriptify";
+
+                // Retrieve the parent folder's category ID
+                var parentFolderCategoryID = RetrieveCategoryIDForAFolder("Query");
+
+                // Attempt to retrieve the folder ID for the specified folder name
+                var folderId = RetrieveCategoryIDForAFolder(folderName);
+
+                // Variable to store the result of the query operation
+                var operationResult = {};
+
+                // If the folder doesn't exist, create it
+                if (!folderId) {
+                    var status = CreateAfolder(folderName, parentFolderCategoryID);
+                    folderId = RetrieveCategoryIDForAFolder(folderName);
+                }
+
+                // Check the queryName and call the respective function to create the query
+                if (queryName === "sentQuery") {
+                    operationResult = CreateSentDataViewQuery(folderName);
+                } else if (queryName === "openQuery") {
+                    operationResult = CreateOpenDataViewQuery(folderName);
+                } else if (queryName === "clickQuery") {
+                    operationResult = CreateClickDataViewQuery(folderName);
+                } else if (queryName === "bounceQuery") {
+                    operationResult = CreateBounceDataViewQuery(folderName);
+                } else if (queryName === "complaintQuery") {
+                    operationResult = CreateComplaintDataViewQuery(folderName);
+                } else if (queryName === "unsubscribeQuery") {
+                    operationResult = CreateUnsubscribeViewQuery(folderName);
+                }
+            }
+
+            // Set success response variables
+            Variable.SetValue("@status", operationResult);
+            Variable.SetValue("@ErrorCode", "000");
+            Variable.SetValue("@StatusMessage", "Queries created successfully.");
+        }
+
+    } catch (ex) {
+        // Catch and log any errors that occur
+        Variable.SetValue("@status", "Error");
+        Variable.SetValue("@ErrorCode", "001");
+        Variable.SetValue("@StatusMessage", "Error: " + ex.message);
+    }
+
+    // Function to retrieve folder ID based on the folder name
+    function RetrieveCategoryIDForAFolder(name) {
+        var filter1 = {
+            Property: "Name",
+            SimpleOperator: "equals",
+            Value: name
+        };
+
+        var filter2 = {
+            Property: "ContentType",
+            SimpleOperator: "equals",
+            Value: "queryactivity"
+        };
+
+        var complexFilter = {
+            LeftOperand: filter1,
+            LogicalOperator: "AND",
+            RightOperand: filter2
+        };
+
+        // Retrieve the folder ID based on the provided filter
+        var results = Folder.Retrieve(complexFilter);
+        return results[0].ID;
+    }
+
+    // Function to create a new folder
+    function CreateAfolder(name, parentFolderCategoryID) {
+        var newFolder = {
+            "Name": name,
+            "CustomerKey": name,
+            "Description": "Query Data View",
+            "ContentType": "queryactivity",
+            "IsActive": true,
+            "IsEditable": true,
+            "AllowChildren": true,
+            "ParentFolderID": parentFolderCategoryID
+        };
+        var status = Folder.Add(newFolder);
+        return status;
+    }
+
+    // Function to create the "Sent" data view query
+    function CreateSentDataViewQuery(folderName) {
+        var queryDef = {
+            Name: "sentdataviewQueryDefinition",
+            CustomerKey: "sentdataviewQueryDefinition",
+            CategoryID: RetrieveCategoryIDForAFolder(folderName),
+            TargetUpdateType: "Overwrite",
+            TargetType: "DE",
+            Target: {
+                Name: "Sent",
+                CustomerKey: "Sent"
+            },
+            QueryText: "Select * from [_Sent]"
+        };
+        return QueryDefinition.Add(queryDef);
+    }
+
+    // Function to create the "Open" data view query
+    function CreateOpenDataViewQuery(folderName) {
+        var queryDef = {
+            Name: "opendataviewQueryDefinition",
+            CustomerKey: "opendataviewQueryDefinition",
+            CategoryID: RetrieveCategoryIDForAFolder(folderName),
+            TargetUpdateType: "Overwrite",
+            TargetType: "DE",
+            Target: {
+                Name: "Open",
+                CustomerKey: "Open"
+            },
+            QueryText: "Select * from [_Open]"
+        };
+        return QueryDefinition.Add(queryDef);
+    }
+
+    // Function to create the "Click" data view query
+    function CreateClickDataViewQuery(folderName) {
+        var queryDef = {
+            Name: "clickdataviewQueryDefinition",
+            CustomerKey: "clickdataviewQueryDefinition",
+            CategoryID: RetrieveCategoryIDForAFolder(folderName),
+            TargetUpdateType: "Overwrite",
+            TargetType: "DE",
+            Target: {
+                Name: "Click",
+                CustomerKey: "Click"
+            },
+            QueryText: "Select * from [_Click]"
+        };
+        return QueryDefinition.Add(queryDef);
+    }
+
+    // Function to create the "Bounce" data view query
+    function CreateBounceDataViewQuery(folderName) {
+        var queryDef = {
+            Name: "bouncedataviewQueryDefinition",
+            CustomerKey: "bouncedataviewQueryDefinition",
+            CategoryID: RetrieveCategoryIDForAFolder(folderName),
+            TargetUpdateType: "Overwrite",
+            TargetType: "DE",
+            Target: {
+                Name: "Bounce",
+                CustomerKey: "Bounce"
+            },
+            QueryText: "Select * from [_Bounce]"
+        };
+        return QueryDefinition.Add(queryDef);
+    }
+
+    // Function to create the "Complaint" data view query
+    function CreateComplaintDataViewQuery(folderName) {
+        var queryDef = {
+            Name: "complaintdataviewQueryDefinition",
+            CustomerKey: "complaintdataviewQueryDefinition",
+            CategoryID: RetrieveCategoryIDForAFolder(folderName),
+            TargetUpdateType: "Overwrite",
+            TargetType: "DE",
+            Target: {
+                Name: "Complaint",
+                CustomerKey: "Complaint"
+            },
+            QueryText: "Select * from [_Complaint]"
+        };
+        return QueryDefinition.Add(queryDef);
+    }
+
+    // Function to create the "Unsubscribe" data view query
+    function CreateUnsubscribeViewQuery(folderName) {
+        var queryDef = {
+            Name: "unsubscribedataviewQueryDefinition",
+            CustomerKey: "unsubscribedataviewQueryDefinition",
+            CategoryID: RetrieveCategoryIDForAFolder(folderName),
+            TargetUpdateType: "Overwrite",
+            TargetType: "DE",
+            Target: {
+                Name: "Unsubscribe",
+                CustomerKey: "Unsubscribe"
+            },
+            QueryText: "Select * from [_Unsubscribe]"
+        };
+        return QueryDefinition.Add(queryDef);
+    }
+</script>
